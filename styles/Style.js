@@ -5,6 +5,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         padding: 10
     },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginVertical: 15
+    },
     head: {
         fontSize: 40,
         fontWeight: 'bold',
@@ -13,5 +18,9 @@ export const styles = StyleSheet.create({
     input: {
         borderBottomWidth: 1,
         marginVertical: 15
+    },
+    listItem: {
+        padding: 25,
+        flexDirection: 'row'
     }
 });
