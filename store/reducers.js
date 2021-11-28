@@ -13,16 +13,22 @@ export const reducer = (state=initialState, action) => {
                 tasks: [ ...state.tasks, action.task ]
             }
         case TASK_DONE:
-            const idx = state.tasks.indexOf(action.task);
+            let arr = [];
+            // const idx = state.tasks.indexOf(action.task);
             const item = {
                 name: action.task,
                 icon: 'check-square-o'
-            }
-            state.tasks[idx] = item
+            };
+            state.tasks.forEach(task => {
+                if (task.name === action.task) {
+                    task = item;
+                }
+                arr.push(task);
+            })
 
             return {
                 ...state,
-                tasks: state.tasks
+                tasks: arr
             }
         default:
             return state;

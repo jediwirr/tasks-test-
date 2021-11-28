@@ -3,12 +3,12 @@ import { View, Text, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { addTask } from '../store/actions';
+import { addTask, setTaskDone } from '../store/actions';
 import { styles } from '../styles/Style';
 
-const Item = ({task, icon}) => (
+const Item = ({task, icon, setDone}) => (
     <View style={styles.listItem}>
-        <Icon style={{ marginEnd: 20 }} size={30} name={icon}/>
+        <Icon style={{ marginEnd: 20 }} size={30} name={icon} onPress={setDone} />
         <Text style={{ fontSize: 18 }} key={task}>{task}</Text>
     </View>
 );
@@ -18,13 +18,9 @@ class Main extends React.Component {
         super(props);
         this.state = ({
             editField: false,
-            value: '',
+            value: ''
         });
     }
-
-    componentDidMount() {
-        console.log(this.props);
-    };
 
     _handlePress = () => {
         this.props.addTask({
@@ -37,9 +33,17 @@ class Main extends React.Component {
         });
     };
 
+    _setDone = (task) => {
+        this.props.setTaskDone(task);
+        this.setState({
+            editField: false,
+            value: ''
+        });
+    };
+
     _renderItem = ({item}) => (
-        <Item task={item.name} icon={item.icon} />
-    )
+        <Item task={item.name} icon={item.icon} setDone={() => this._setDone(item.name)} />
+    );
 
     Header = () => (
         <View>
@@ -95,7 +99,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        addTask
+        addTask,
+        setTaskDone
     }, dispatch);
 };
 
