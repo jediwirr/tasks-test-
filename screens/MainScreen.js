@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { addTask } from '../store/actions';
 import { styles } from '../styles/Style';
+
+const Item = ({task, icon}) => (
+    <View style={styles.listItem}>
+        <Icon style={{ marginEnd: 20 }} size={30} name={icon}/>
+        <Text style={{ fontSize: 18 }} key={task}>{task}</Text>
+    </View>
+);
 
 class Main extends React.Component {
     constructor(props) {
@@ -20,32 +27,38 @@ class Main extends React.Component {
     };
 
     _handlePress = () => {
-        this.props.addTask(this.state.value);
+        this.props.addTask({
+            name: this.state.value,
+            icon: 'square-o'
+        });
         this.setState({
             editField: false,
             value: ''
         });
     };
 
-    render() {
-        return(
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.head}>Tasks</Text>
-                    <Icon
-                        name="plus-square"
-                        size={50}
-                        color="#000"
-                        onPress={
-                            () => this.setState({
-                                editField: !this.state.editField
-                            })
-                        }
-                    />
-                </View>
-                {
-                    this.state.editField ?
-                    <TextInput 
+    _renderItem = ({item}) => (
+        <Item task={item.name} icon={item.icon} />
+    )
+
+    Header = () => (
+        <View>
+            <View style={styles.header}>
+                <Text style={styles.head}>Tasks</Text>
+                <Icon
+                    name="plus-square"
+                    size={50}
+                    color="#000"
+                    onPress={
+                        () => this.setState({
+                            editField: !this.state.editField
+                        })
+                    }
+                />
+            </View>
+            {
+                this.state.editField ?
+                <TextInput 
                     style={styles.input}
                     maxLength={60} 
                     onSubmitEditing={this._handlePress}
@@ -57,17 +70,19 @@ class Main extends React.Component {
                     value={this.state.value}
                 />
                 : <></>
-                }
-                {
-                    !this.props.tasks ? <></> :
-                    this.props.tasks.map(task => (
-                        <View style={styles.listItem}>
-                            <Icon style={{ marginEnd: 20 }} size={30} name="square-o" />
-                            <Text style={{ fontSize: 18 }} key={task}>{task}</Text>
-                        </View>
-                    ))
-                }
-            </View>
+            }
+        </View>
+    );
+
+    render() {
+        return(
+            <FlatList 
+                ListHeaderComponent={this.Header}
+                style={styles.container}
+                data={this.props.tasks}
+                renderItem={this._renderItem}
+                keyExtractor={item => item.name}
+            />
         );
     };
 };

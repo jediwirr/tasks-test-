@@ -1,7 +1,7 @@
-import { ADD_TASK } from "./actions";
+import { ADD_TASK, TASK_DONE } from "./actions";
 
 const initialState = {
-    tasks: ['1ewpephpg', '2pejfpjpje']
+    tasks: [{name: '1ewpephpg', icon: 'square-o'}, {name: '2pejfpjpje', icon: 'square-o'}]
 };
 
 export const reducer = (state=initialState, action) => {
@@ -11,6 +11,18 @@ export const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 tasks: [ ...state.tasks, action.task ]
+            }
+        case TASK_DONE:
+            const idx = state.tasks.indexOf(action.task);
+            const item = {
+                name: action.task,
+                icon: 'check-square-o'
+            }
+            state.tasks[idx] = item
+
+            return {
+                ...state,
+                tasks: state.tasks
             }
         default:
             return state;
