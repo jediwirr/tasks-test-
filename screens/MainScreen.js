@@ -6,9 +6,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { addTask, setTaskDone } from '../store/actions';
 import { styles } from '../styles/Style';
 
-const Item = ({task, icon, setDone}) => (
+const Item = ({task, done, setDone}) => (
     <View style={styles.listItem}>
-        <Icon style={{ marginEnd: 20 }} size={30} name={icon} onPress={setDone} />
+        <Icon style={{ marginEnd: 20 }} size={30} name={done ? 'check-square-o' : 'square-o'} onPress={setDone} />
         <Text style={{ fontSize: 18 }} key={task}>{task}</Text>
     </View>
 );
@@ -42,7 +42,7 @@ class Main extends React.Component {
     };
 
     _renderItem = ({item}) => (
-        <Item task={item.name} icon={item.icon} setDone={() => this._setDone(item.name)} />
+        <Item task={item.name} done={item.done} setDone={() => this._setDone(item.name)} />
     );
 
     Header = () => (
@@ -63,6 +63,7 @@ class Main extends React.Component {
             {
                 this.state.editField ?
                 <TextInput 
+                    autoFocus
                     style={styles.input}
                     maxLength={60} 
                     onSubmitEditing={this._handlePress}

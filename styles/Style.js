@@ -17,7 +17,9 @@ export const styles = StyleSheet.create({
     },
     input: {
         borderBottomWidth: 1,
-        marginVertical: 15
+        marginVertical: 15,
+        fontSize: 18
+
     },
     listItem: {
         padding: 25,

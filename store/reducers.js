@@ -1,7 +1,7 @@
 import { ADD_TASK, TASK_DONE } from "./actions";
 
 const initialState = {
-    tasks: [{name: '1ewpephpg', icon: 'square-o'}, {name: '2pejfpjpje', icon: 'square-o'}]
+    tasks: [{name: "Here's a task item", done: false}]
 };
 
 export const reducer = (state=initialState, action) => {
@@ -14,14 +14,10 @@ export const reducer = (state=initialState, action) => {
             }
         case TASK_DONE:
             let arr = [];
-            // const idx = state.tasks.indexOf(action.task);
-            const item = {
-                name: action.task,
-                icon: 'check-square-o'
-            };
+
             state.tasks.forEach(task => {
                 if (task.name === action.task) {
-                    task = item;
+                    task.done = !task.done;
                 }
                 arr.push(task);
             })
